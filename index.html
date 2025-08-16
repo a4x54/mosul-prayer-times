@@ -392,6 +392,13 @@
             transform: translateX(26px);
         }
         
+        .notification-info {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            display: none;
+        }
+        
         footer {
             margin-top: 30px;
             font-size: 1rem;
@@ -658,7 +665,9 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-                <p><small>سيتم إرسال تنبيه قبل كل صلاة</small></p>
+                <div class="notification-info" id="notification-info">
+                    <i class="fas fa-info-circle"></i> <span id="notification-status">يرجى منح الإذن لعرض الإشعارات عند الطلب</span>
+                </div>
             </div>
             
             <div class="adjustment-info">
@@ -666,7 +675,7 @@
             </div>
             
             <footer>
-                    <p>تم التطوير بواسطة محمد رعد الجبوري</p>
+                <p>تم التطوير بواسطة محمد رعد الجبوري</p>
                 <p>مصدر البيانات: <a href="https://aladhan.com" target="_blank" style="color: var(--accent-color);">Aladhan.com</a> مع تعديلات محلية</p>
                 <div class="last-updated" id="last-updated">آخر تحديث: --/--/---- --:--</div>
             </footer>
@@ -688,6 +697,8 @@
         const currentCityEl = document.getElementById('current-city');
         const reminderToggle = document.getElementById('reminder-toggle');
         const cityButtons = document.querySelectorAll('.city-btn');
+        const notificationInfo = document.getElementById('notification-info');
+        const notificationStatus = document.getElementById('notification-status');
         
         // بيانات الصلوات وأيقوناتها
         const prayers = [
@@ -749,6 +760,9 @@
         
         // المدينة الحالية
         let currentCity = "Mosul";
+        
+        // متغير لتخزين المؤقت الخاص بالتنبيهات
+        let reminderInterval;
         
         // تحويل الوقت إلى تنسيق 12 ساعة
         function convertTo12Hour(timeStr) {
@@ -814,13 +828,29 @@
                     // حساب الصلاة القادمة
                     calculateNextPrayer(adjustedTimings);
                     
-                    // التحقق من تنبيهات الصلاة
-                    checkPrayerReminders(adjustedTimings);
+                    // بدء فحص التنبيهات
+                    startReminderCheck(adjustedTimings);
                 }
             } catch (error) {
                 console.error('حدث خطأ في جلب البيانات:', error);
                 prayerTimesContainer.innerHTML = '<div class="loading">⚠️ تعذر تحميل بيانات مواقيت الصلاة. يرجى المحاولة لاحقًا.</div>';
             }
+        }
+        
+        // بدء فحص التنبيهات
+        function startReminderCheck(timings) {
+            // إيقاف أي فحص سابق
+            if (reminderInterval) {
+                clearInterval(reminderInterval);
+            }
+            
+            // فحص التنبيهات كل دقيقة
+            reminderInterval = setInterval(() => {
+                checkPrayerReminders(timings);
+            }, 60000); // 60 ثانية
+            
+            // فحص فوري عند التحميل
+            checkPrayerReminders(timings);
         }
         
         // التحقق من تنبيهات الصلاة
@@ -831,6 +861,8 @@
             const currentTime = now.getHours() * 60 + now.getMinutes();
             
             prayers.forEach(prayer => {
+                if (!timings[prayer.key]) return;
+                
                 const [hours, minutes] = timings[prayer.key].split(':').map(Number);
                 const prayerTime = hours * 60 + minutes;
                 
@@ -843,17 +875,40 @@
         
         // عرض تنبيه الصلاة
         function showReminder(prayerName) {
+            // التحقق من دعم الإشعارات
+            if (!("Notification" in window)) {
+                notificationStatus.textContent = "المتصفح لا يدعم الإشعارات!";
+                notificationInfo.style.display = "block";
+                return;
+            }
+            
             if (Notification.permission === "granted") {
+                // إظهار الإشعار
                 const notification = new Notification("موعد الصلاة قريب", {
                     body: `صلاة ${prayerName} بعد 5 دقائق، استعد للصلاة`,
                     icon: "https://cdn-icons-png.flaticon.com/512/599/599518.png"
                 });
+                
+                notificationStatus.textContent = "تم إرسال تنبيه للصلاة القادمة";
+                notificationInfo.style.display = "block";
+                
+                // إخفاء الرسالة بعد 5 ثواني
+                setTimeout(() => {
+                    notificationInfo.style.display = "none";
+                }, 5000);
             } else if (Notification.permission !== "denied") {
+                // طلب الإذن
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
                         showReminder(prayerName);
+                    } else {
+                        notificationStatus.textContent = "تم رفض الإذن لعرض الإشعارات";
+                        notificationInfo.style.display = "block";
                     }
                 });
+            } else {
+                notificationStatus.textContent = "تم رفض الإذن لعرض الإشعارات. يرجى تفعيلها يدويًا في إعدادات المتصفح";
+                notificationInfo.style.display = "block";
             }
         }
         
@@ -885,6 +940,8 @@
             let minDiff = Infinity;
             
             prayers.forEach(prayer => {
+                if (!timings[prayer.key]) return;
+                
                 const [hours, minutes] = timings[prayer.key].split(':').map(Number);
                 const prayerTime = hours * 60 + minutes;
                 
@@ -1030,10 +1087,31 @@
             reminderToggle.addEventListener('change', function() {
                 localStorage.setItem('prayerReminder', this.checked);
                 
-                // طلب الإذن للإشعارات عند التفعيل
-                if (this.checked && Notification.permission !== "granted") {
-                    Notification.requestPermission();
+                // إذا تم التفعيل، طلب الإذن للإشعارات
+                if (this.checked) {
+                    if (Notification.permission !== "granted") {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === "granted") {
+                                notificationStatus.textContent = "تم تفعيل التنبيهات بنجاح";
+                                notificationInfo.style.display = "block";
+                            } else {
+                                notificationStatus.textContent = "تم رفض الإذن لعرض الإشعارات";
+                                notificationInfo.style.display = "block";
+                            }
+                        });
+                    } else {
+                        notificationStatus.textContent = "تم تفعيل التنبيهات بنجاح";
+                        notificationInfo.style.display = "block";
+                    }
+                } else {
+                    notificationStatus.textContent = "تم إيقاف التنبيهات";
+                    notificationInfo.style.display = "block";
                 }
+                
+                // إخفاء الرسالة بعد 5 ثواني
+                setTimeout(() => {
+                    notificationInfo.style.display = "none";
+                }, 5000);
             });
             
             updateDateInfo();
@@ -1067,7 +1145,3 @@
     </script>
 </body>
 </html>
-
-
-
-
