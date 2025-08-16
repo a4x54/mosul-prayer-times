@@ -162,6 +162,29 @@
             gap: 8px;
         }
         
+        .location-selector {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .city-btn {
+            background: rgba(var(--primary-color-rgb), 0.1);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .city-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
         .date-info {
             display: flex;
             justify-content: center;
@@ -188,15 +211,15 @@
         
         .prayer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 18px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
         }
         
         .prayer-card {
             background: rgba(var(--primary-color-rgb), 0.05);
             border-radius: 18px;
-            padding: 20px 15px;
+            padding: 18px 12px;
             transition: all 0.3s;
             cursor: pointer;
             position: relative;
@@ -206,8 +229,8 @@
         }
         
         .prayer-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             background: rgba(var(--primary-color-rgb), 0.1);
         }
         
@@ -217,8 +240,8 @@
         }
         
         .prayer-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
             color: var(--accent-color);
             transition: transform 0.3s;
         }
@@ -228,32 +251,38 @@
         }
         
         .prayer-name {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
             color: var(--text-color);
             font-weight: 600;
         }
         
         .prayer-time {
-            font-size: 1.9rem;
+            font-size: 1.7rem;
             font-weight: 700;
             color: var(--secondary-color);
             letter-spacing: 1px;
         }
         
-        .ampm {
-            font-size: 1.1rem;
+        .prayer-rakaat {
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            margin-left: 5px;
+            margin-top: 5px;
+        }
+        
+        .ampm {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-left: 4px;
             font-weight: normal;
         }
         
         .next-prayer {
             background: var(--next-prayer-bg);
             border-radius: 18px;
-            padding: 22px;
+            padding: 20px;
             margin: 30px 0;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             position: relative;
             overflow: hidden;
             border: 2px solid var(--primary-color);
@@ -278,7 +307,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 25px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
@@ -286,12 +315,12 @@
             background: var(--countdown-bg);
             padding: 15px;
             border-radius: 15px;
-            min-width: 85px;
+            min-width: 80px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
         .countdown-value {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             font-weight: 800;
             color: var(--primary-color);
             line-height: 1;
@@ -301,6 +330,66 @@
         .countdown-label {
             font-size: 1rem;
             color: var(--text-secondary);
+        }
+        
+        .reminder-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(var(--primary-color-rgb), 0.05);
+            border-radius: 15px;
+        }
+        
+        .reminder-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
         
         footer {
@@ -318,8 +407,8 @@
         }
         
         .loading {
-            font-size: 1.6rem;
-            padding: 50px 0;
+            font-size: 1.5rem;
+            padding: 40px 0;
             animation: fadeInOut 1.5s infinite;
             color: var(--text-secondary);
         }
@@ -363,39 +452,39 @@
             
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                gap: 12px;
             }
             
             .prayer-card {
-                padding: 18px 12px;
+                padding: 15px 10px;
                 border-radius: 16px;
             }
             
             .prayer-icon {
-                font-size: 2.2rem;
-                margin-bottom: 12px;
+                font-size: 2rem;
+                margin-bottom: 10px;
             }
             
             .prayer-name {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
             
             .prayer-time {
-                font-size: 1.7rem;
+                font-size: 1.6rem;
             }
             
             .next-prayer {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
                 padding: 18px;
             }
             
             .countdown-box {
-                min-width: 75px;
+                min-width: 70px;
                 padding: 12px;
             }
             
             .countdown-value {
-                font-size: 2.1rem;
+                font-size: 2rem;
             }
         }
         
@@ -436,47 +525,47 @@
             
             .prayer-grid {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 10px;
                 margin: 20px 0;
             }
             
             .prayer-card {
-                padding: 16px 10px;
+                padding: 14px 8px;
                 border-radius: 15px;
             }
             
             .prayer-icon {
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
-            
-            .prayer-name {
-                font-size: 1.3rem;
+                font-size: 1.8rem;
                 margin-bottom: 8px;
             }
             
+            .prayer-name {
+                font-size: 1.2rem;
+                margin-bottom: 6px;
+            }
+            
             .prayer-time {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
             
             .next-prayer {
-                font-size: 1.2rem;
-                padding: 16px;
+                font-size: 1.1rem;
+                padding: 15px;
                 margin: 25px 0;
             }
             
             .countdown {
-                gap: 12px;
-                margin-top: 20px;
+                gap: 10px;
+                margin-top: 15px;
             }
             
             .countdown-box {
-                min-width: 65px;
+                min-width: 60px;
                 padding: 10px;
             }
             
             .countdown-value {
-                font-size: 1.8rem;
+                font-size: 1.7rem;
             }
             
             .countdown-label {
@@ -491,6 +580,11 @@
             .adjustment-info {
                 font-size: 0.9rem;
                 padding: 10px;
+            }
+            
+            .reminder-section {
+                padding: 12px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -514,7 +608,14 @@
                 </div>
                 
                 <div class="location">
-                    <i class="fas fa-location-dot"></i> الموصل، العراق
+                    <i class="fas fa-location-dot"></i> <span id="current-city">الموصل، العراق</span>
+                </div>
+                
+                <div class="location-selector">
+                    <button class="city-btn active" data-city="Mosul">الموصل</button>
+                    <button class="city-btn" data-city="Baghdad">بغداد</button>
+                    <button class="city-btn" data-city="Basra">البصرة</button>
+                    <button class="city-btn" data-city="Erbil">أربيل</button>
                 </div>
                 
                 <div class="date-info">
@@ -549,12 +650,23 @@
                 <!-- سيتم ملؤها بواسطة JavaScript -->
             </div>
             
+            <div class="reminder-section">
+                <div class="reminder-toggle">
+                    <span>تفعيل تنبيه قبل الأذان بـ 5 دقائق</span>
+                    <label class="switch">
+                        <input type="checkbox" id="reminder-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p><small>سيتم إرسال تنبيه قبل كل صلاة</small></p>
+            </div>
+            
             <div class="adjustment-info">
-                <i class="fas fa-info-circle"></i> تم ضبط مواقيت الصلاة وفقًا للمصادر المحلية في الموصل
+                <i class="fas fa-info-circle"></i> تم ضبط مواقيت الصلاة وفقًا للمصادر المحلية
             </div>
             
             <footer>
-                <p>" تم التطوير بواسطة (محمد رعد الجبوري) a4x54@  "</p>
+                <p>تم التطوير بكل ❤️ لأهل العراق</p>
                 <p>مصدر البيانات: <a href="https://aladhan.com" target="_blank" style="color: var(--accent-color);">Aladhan.com</a> مع تعديلات محلية</p>
                 <div class="last-updated" id="last-updated">آخر تحديث: --/--/---- --:--</div>
             </footer>
@@ -573,26 +685,70 @@
         const secondsEl = document.getElementById('seconds');
         const lastUpdatedEl = document.getElementById('last-updated');
         const themeToggle = document.getElementById('theme-toggle');
+        const currentCityEl = document.getElementById('current-city');
+        const reminderToggle = document.getElementById('reminder-toggle');
+        const cityButtons = document.querySelectorAll('.city-btn');
         
-        // بيانات الصلوات وأيقوناتها - تم التعديل على أيقونات الشروق والمغرب
+        // بيانات الصلوات وأيقوناتها
         const prayers = [
-            { name: 'الفجر', key: 'Fajr', icon: 'fas fa-sun' },
-            { name: 'الشروق', key: 'Sunrise', icon: 'fas fa-sunrise' },
-            { name: 'الظهر', key: 'Dhuhr', icon: 'fas fa-sun' },
-            { name: 'العصر', key: 'Asr', icon: 'fas fa-sun' },
-            { name: 'المغرب', key: 'Maghrib', icon: 'fas fa-sunset' },
-            { name: 'العشاء', key: 'Isha', icon: 'fas fa-moon' }
+            { 
+                name: 'الفجر', 
+                key: 'Fajr', 
+                icon: 'fas fa-sun',
+                rakaat: 'ركعتان'
+            },
+            { 
+                name: 'الشروق', 
+                key: 'Sunrise', 
+                icon: 'fas fa-sunrise',
+                rakaat: ''
+            },
+            { 
+                name: 'الظهر', 
+                key: 'Dhuhr', 
+                icon: 'fas fa-sun',
+                rakaat: 'أربع ركعات'
+            },
+            { 
+                name: 'العصر', 
+                key: 'Asr', 
+                icon: 'fas fa-sun',
+                rakaat: 'أربع ركعات'
+            },
+            { 
+                name: 'المغرب', 
+                key: 'Maghrib', 
+                icon: 'fas fa-sunset',
+                rakaat: 'ثلاث ركعات'
+            },
+            { 
+                name: 'العشاء', 
+                key: 'Isha', 
+                icon: 'fas fa-moon',
+                rakaat: 'أربع ركعات'
+            }
         ];
         
         // إزاحات زمنية لمواقيت الصلاة في الموصل (بالدقائق)
         const prayerAdjustments = {
-            Fajr: 3,     // الفجر
-            Sunrise: -3,  // الشروق
-            Dhuhr: 5,   // الظهر الساعة 12:17
-            Asr: 2,      // العصر الساعة 4:00
-            Maghrib: 5,  // المغرب الساعة 7:04
-            Isha: -1     // العشاء
+            Fajr: 0,     // الفجر
+            Sunrise: 0,  // الشروق
+            Dhuhr: 17,   // الظهر الساعة 12:17
+            Asr: 0,      // العصر الساعة 4:00
+            Maghrib: 4,  // المغرب الساعة 7:04
+            Isha: 0      // العشاء
         };
+        
+        // المدن المتاحة
+        const cities = {
+            Mosul: { name: "الموصل", country: "Iraq" },
+            Baghdad: { name: "بغداد", country: "Iraq" },
+            Basra: { name: "البصرة", country: "Iraq" },
+            Erbil: { name: "أربيل", country: "Iraq" }
+        };
+        
+        // المدينة الحالية
+        let currentCity = "Mosul";
         
         // تحويل الوقت إلى تنسيق 12 ساعة
         function convertTo12Hour(timeStr) {
@@ -624,7 +780,8 @@
         
         // جلب مواقيت الصلاة
         async function fetchPrayerTimes() {
-            const url = 'https://api.aladhan.com/v1/timingsByCity?city=Mosul&country=Iraq&method=4';
+            const city = cities[currentCity];
+            const url = `https://api.aladhan.com/v1/timingsByCity?city=${currentCity}&country=${city.country}&method=4`;
             
             try {
                 // إظهار حالة التحميل
@@ -656,10 +813,47 @@
                     
                     // حساب الصلاة القادمة
                     calculateNextPrayer(adjustedTimings);
+                    
+                    // التحقق من تنبيهات الصلاة
+                    checkPrayerReminders(adjustedTimings);
                 }
             } catch (error) {
                 console.error('حدث خطأ في جلب البيانات:', error);
                 prayerTimesContainer.innerHTML = '<div class="loading">⚠️ تعذر تحميل بيانات مواقيت الصلاة. يرجى المحاولة لاحقًا.</div>';
+            }
+        }
+        
+        // التحقق من تنبيهات الصلاة
+        function checkPrayerReminders(timings) {
+            if (!reminderToggle.checked) return;
+            
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            
+            prayers.forEach(prayer => {
+                const [hours, minutes] = timings[prayer.key].split(':').map(Number);
+                const prayerTime = hours * 60 + minutes;
+                
+                // التحقق إذا كان الوقت الحالي قبل الصلاة بـ 5 دقائق
+                if (prayerTime - currentTime === 5) {
+                    showReminder(prayer.name);
+                }
+            });
+        }
+        
+        // عرض تنبيه الصلاة
+        function showReminder(prayerName) {
+            if (Notification.permission === "granted") {
+                const notification = new Notification("موعد الصلاة قريب", {
+                    body: `صلاة ${prayerName} بعد 5 دقائق، استعد للصلاة`,
+                    icon: "https://cdn-icons-png.flaticon.com/512/599/599518.png"
+                });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        showReminder(prayerName);
+                    }
+                });
             }
         }
         
@@ -674,6 +868,7 @@
                         <div class="prayer-icon"><i class="${prayer.icon}"></i></div>
                         <div class="prayer-name">${prayer.name}</div>
                         <div class="prayer-time">${time12Hour}</div>
+                        ${prayer.rakaat ? `<div class="prayer-rakaat">${prayer.rakaat}</div>` : ''}
                     </div>
                 `;
             });
@@ -780,6 +975,25 @@
             }
         }
         
+        // تغيير المدينة
+        function changeCity(city) {
+            currentCity = city;
+            currentCityEl.textContent = cities[city].name;
+            fetchPrayerTimes();
+            
+            // تحديث الأزرار النشطة
+            cityButtons.forEach(btn => {
+                if (btn.dataset.city === city) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // حفظ المدينة المختارة
+            localStorage.setItem('selectedCity', city);
+        }
+        
         // تهيئة الصفحة
         function init() {
             // تحميل الوضع المحفوظ
@@ -790,11 +1004,37 @@
                 themeToggle.querySelector('i').classList.remove('fa-sun');
             }
             
+            // تحميل المدينة المحفوظة
+            const savedCity = localStorage.getItem('selectedCity');
+            if (savedCity && cities[savedCity]) {
+                changeCity(savedCity);
+            }
+            
+            // تحميل إعدادات التنبيه
+            const savedReminder = localStorage.getItem('prayerReminder');
+            if (savedReminder === 'true') {
+                reminderToggle.checked = true;
+            }
+            
             // تعيين متغيرات الألوان
             const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
             const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
             document.documentElement.style.setProperty('--primary-color-rgb', hexToRgb(primaryColor));
             document.documentElement.style.setProperty('--accent-color-rgb', hexToRgb(accentColor));
+            
+            // إضافة مستمعي الأحداث
+            cityButtons.forEach(btn => {
+                btn.addEventListener('click', () => changeCity(btn.dataset.city));
+            });
+            
+            reminderToggle.addEventListener('change', function() {
+                localStorage.setItem('prayerReminder', this.checked);
+                
+                // طلب الإذن للإشعارات عند التفعيل
+                if (this.checked && Notification.permission !== "granted") {
+                    Notification.requestPermission();
+                }
+            });
             
             updateDateInfo();
             fetchPrayerTimes();
@@ -827,4 +1067,3 @@
     </script>
 </body>
 </html>
-
